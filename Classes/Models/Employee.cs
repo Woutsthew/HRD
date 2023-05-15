@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HRD.Classes.Model
+namespace HRD.Classes.Models
 {
     internal class Employee
     {
