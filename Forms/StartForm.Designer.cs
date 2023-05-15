@@ -44,6 +44,8 @@
             L_FromSubdivison = new Label();
             CB_FIO = new ComboBox();
             CB_FromSubdivisions = new ComboBox();
+            B_CreateStructure = new Button();
+            DTP_Structure = new DateTimePicker();
             GB_AddEmployee.SuspendLayout();
             GB_TransferAndDelete.SuspendLayout();
             SuspendLayout();
@@ -198,11 +200,31 @@
             CB_FromSubdivisions.Size = new Size(168, 23);
             CB_FromSubdivisions.TabIndex = 1;
             // 
+            // B_CreateStructure
+            // 
+            B_CreateStructure.Location = new Point(336, 533);
+            B_CreateStructure.Name = "B_CreateStructure";
+            B_CreateStructure.Size = new Size(200, 23);
+            B_CreateStructure.TabIndex = 5;
+            B_CreateStructure.Text = "Отобразить структуру";
+            B_CreateStructure.UseVisualStyleBackColor = true;
+            // 
+            // DTP_Structure
+            // 
+            DTP_Structure.CustomFormat = "dd.MM.yyyy HH:mm:ss";
+            DTP_Structure.Format = DateTimePickerFormat.Custom;
+            DTP_Structure.Location = new Point(336, 504);
+            DTP_Structure.Name = "DTP_Structure";
+            DTP_Structure.Size = new Size(200, 23);
+            DTP_Structure.TabIndex = 6;
+            // 
             // StartForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(816, 568);
+            Controls.Add(DTP_Structure);
+            Controls.Add(B_CreateStructure);
             Controls.Add(GB_TransferAndDelete);
             Controls.Add(GB_AddEmployee);
             Controls.Add(TV_Structure);
@@ -234,5 +256,7 @@
         private ComboBox CB_FIO;
         private Button B_DeleteEmployee;
         private Button B_TransferEmployee;
+        private Button B_CreateStructure;
+        private DateTimePicker DTP_Structure;
     }
 }

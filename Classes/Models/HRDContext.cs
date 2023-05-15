@@ -10,7 +10,7 @@ namespace HRD.Classes.Models
 
         public HRDContext()
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
