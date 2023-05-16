@@ -1,15 +1,7 @@
 ﻿using HRD.Classes.Controllers;
 using HRD.Classes.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace HRD.Forms
 {
@@ -27,8 +19,11 @@ namespace HRD.Forms
                     try
                     {
                         hrd = new HRDContext();
-                        Invoke(new Action(() => { B_ConnectDB.Visible = false;
-                            B_CreateStructure.PerformClick(); }));
+                        Invoke(new Action(() =>
+                        {
+                            B_ConnectDB.Visible = false;
+                            B_CreateStructure.PerformClick();
+                        }));
                     }
                     catch (Exception ex)
                     {
@@ -47,30 +42,28 @@ namespace HRD.Forms
                 };
                 hrd.Employees.Add(employee);
                 hrd.SaveChanges();
-                Invoke(new Action(() => B_CreateStructure.PerformClick()));
+                hrd.ChangeTracker.Clear();
             };
             B_CreateStructure.Click += (s, e) =>
             {
                 var dt = DTP_Structure.Value;
 
                 hrd.ChangeTracker.Clear();
-                var tranfers = hrd.SubdivisionTransfers.Where(t => t.atDateTime > dt).OrderByDescending(t => t.atDateTime).ToList();
-
-                var employees = hrd.Employees.IgnoreQueryFilters().Where(e => (e.DismissalDate > dt && e.HireDate == null)
-                    || (dt >= e.HireDate && e.DismissalDate == null) || (e.DismissalDate > dt && dt >= e.HireDate)).ToList();
-
                 var subdivisions = hrd.Subdivisions.ToList();
-                subdivisions.ForEach(s => s.Employees.Clear());
+                hrd.ChangeTracker.Clear();
+
+                var employees = hrd.Employees.Where(e => (dt >= e.HireDate && e.DismissalDate == null) || (e.DismissalDate > dt && dt >= e.HireDate))
+                    .Include(emp => emp.Transfers.OrderBy(t => t.atDateTime).Where(t => t.atDateTime > dt).Take(1))
+                    .ToList();
 
                 foreach (var employee in employees)
                 {
-                    employee.SubdivisionId = employee.Transfers.FirstOrDefault(
-                         new SubdivisionTransfers { FromSubdivisionId = employee.SubdivisionId }).FromSubdivisionId
-                         ?? throw new Exception("CS0162");
-                    subdivisions.Find(s => s.Id == employee.SubdivisionId)!.Employees.Add(employee);
+                    var subdivisionId = employee.Transfers.Count != 0 ? employee.Transfers.First().FromSubdivisionId : employee.SubdivisionId;
+                    subdivisions.Find(s => s.Id == subdivisionId)!.Employees.Add(employee);
                 }
 
                 CreateStructure(subdivisions);
+                hrd.ChangeTracker.Clear();
             };
         }
 

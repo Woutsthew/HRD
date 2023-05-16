@@ -10,7 +10,7 @@ namespace HRD.Classes.Models
 
         public HRDContext()
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -23,7 +23,6 @@ namespace HRD.Classes.Models
         {
             modelBuilder.Entity<Employee>().Property(e => e.FIO)
                 .HasComputedColumnSql("TRIM(CONCAT(LastName, ' ', FirstName, ' ', SecondName))");
-            modelBuilder.Entity<Employee>().HasQueryFilter(e => e.DismissalDate == null);
 
             var s1 = new Subdivision { Id = 1, Name = "Директора" };
             var s2 = new Subdivision { Id = 2, Name = "Бухгалтерия", ParentId = s1.Id };
