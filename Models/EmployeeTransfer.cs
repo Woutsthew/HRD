@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HRD.Classes.Models
+namespace HRD.Models
 {
-    internal class SubdivisionTransfers
+    internal class EmployeeTransfer
     {
         public int Id { get; set; }
         [Required]

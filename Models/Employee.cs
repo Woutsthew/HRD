@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HRD.Classes.Models
+namespace HRD.Models
 {
     internal class Employee
     {
@@ -19,6 +19,6 @@ namespace HRD.Classes.Models
         public int SubdivisionId { get; set; }
         public Subdivision? Subdivision { get; set; }
 
-        public List<SubdivisionTransfers> Transfers { get; set; } = new();
+        public List<EmployeeTransfer> Transfers { get; set; } = new();
     }
 }
