@@ -15,9 +15,8 @@ namespace HRD.Controllers
 
         static public TreeNode[] GetEmployeesBySubdivisionOnPeriod(int subdivisionid, DateTime dtStart, DateTime dtEnd)
         {
-            using var hrd = new HRDContext(); // fix this have a bug when employee is dismissal and date ahead this date
-            var employees = hrd.Employees.Where(emp => (emp.HireDate <= dtEnd && emp.DismissalDate == null)
-                || emp.DismissalDate >= dtStart)
+            using var hrd = new HRDContext();
+            var employees = hrd.Employees.Where(emp => emp.HireDate <= dtEnd && (emp.DismissalDate == null || emp.DismissalDate > dtStart))
                 .Include(emp => emp.Transfers.Where(t => t.atDateTime >= dtStart && t.atDateTime <= dtEnd
                 && (t.FromSubdivisionId == subdivisionid || t.ToSubdivisionId == subdivisionid)))
                 .ToList();

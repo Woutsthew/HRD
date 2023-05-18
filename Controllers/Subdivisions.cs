@@ -18,7 +18,7 @@ namespace HRD.Controllers
             var subdivisions = hrd.Subdivisions.ToList();
             hrd.ChangeTracker.Clear();
 
-            var employees = hrd.Employees.Where(emp => (dt >= emp.HireDate && emp.DismissalDate == null) || (emp.DismissalDate > dt && dt >= emp.HireDate))
+            var employees = hrd.Employees.Where(emp => emp.HireDate <= dt && (emp.DismissalDate == null || emp.DismissalDate > dt))
                 .Include(emp => emp.Transfers.OrderBy(t => t.atDateTime).Where(t => t.atDateTime > dt).Take(1))
                 .ToList();
 
@@ -47,8 +47,8 @@ namespace HRD.Controllers
             var node = new TreeNode(subdivision.Name);
             node.NodeFont = new Font("Arial", 10, FontStyle.Bold);
 
-            var emplyees = subdivision.Employees.Select(e => new TreeNode(e.FIO)).ToArray();
-            node.Nodes.AddRange(emplyees);
+            var employees = subdivision.Employees.Select(e => new TreeNode(e.FIO)).ToArray();
+            node.Nodes.AddRange(employees);
 
             foreach (Subdivision children in subdivision.Childrens)
                 node.Nodes.Add(CreateNode(children));
