@@ -5,8 +5,16 @@ namespace HRD.Controllers
 {
     static internal class Employees
     {
-        static public int CreateEmployee(Employee employee)
+        static public int CreateEmployee(string lastName, string firstName, string secondName, int subdivisionId)
         {
+            var employee = new Employee
+            {
+                LastName = lastName,
+                FirstName = firstName,
+                SecondName = secondName,
+                SubdivisionId = subdivisionId
+            };
+
             using var hrd = new HRDContext();
             hrd.Employees.Add(employee);
             hrd.SaveChanges();

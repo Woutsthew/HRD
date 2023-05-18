@@ -1,5 +1,4 @@
 ﻿using HRD.Controllers;
-using HRD.Models;
 
 namespace HRD.Forms
 {
@@ -19,14 +18,8 @@ namespace HRD.Forms
 
             B_AddEmployee.Click += (s, e) =>
             {
-                var employee = new Employee
-                {
-                    LastName = TB_LastName.Text,
-                    FirstName = TB_FirstName.Text,
-                    SecondName = TB_SecondName.Text,
-                    SubdivisionId = (int)CB_Subdivisions1.SelectedValue
-                };
-                var id = Employees.CreateEmployee(employee);
+                var id = Employees.CreateEmployee(TB_LastName.Text, TB_FirstName.Text,
+                    TB_SecondName.Text, (int)CB_Subdivisions1.SelectedValue);
             };
 
             B_CreateStructure.Click += (s, e) =>
