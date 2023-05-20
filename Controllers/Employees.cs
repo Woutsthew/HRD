@@ -29,18 +29,9 @@ namespace HRD.Controllers
                 && (t.FromSubdivisionId == subdivisionid || t.ToSubdivisionId == subdivisionid)).Take(1))
                 .ToList();
 
-            var employeesBySubdivision = new List<TreeNode>();
-            foreach (var employee in employees)
-            {
-                if (employee.SubdivisionId == subdivisionid)
-                {
-                    employeesBySubdivision.Add(new TreeNode(employee.FIO));
-                    continue;
-                }
-
-                if (employee.Transfers.Count != 0)
-                    employeesBySubdivision.Add(new TreeNode(employee.FIO));
-            }
+            var employeesBySubdivision = employees
+                .Where(emp => emp.SubdivisionId == subdivisionid || emp.Transfers.Count != 0)
+                .Select(emp => new TreeNode(emp.FIO));
 
             return employeesBySubdivision.ToArray();
         }
