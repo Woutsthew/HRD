@@ -26,7 +26,7 @@ namespace HRD.Controllers
             using var hrd = new HRDContext();
             var employees = hrd.Employees.Where(emp => emp.HireDate <= dtEnd && (emp.DismissalDate == null || emp.DismissalDate > dtStart))
                 .Include(emp => emp.Transfers.Where(t => t.atDateTime >= dtStart && t.atDateTime <= dtEnd
-                && (t.FromSubdivisionId == subdivisionid || t.ToSubdivisionId == subdivisionid)))
+                && (t.FromSubdivisionId == subdivisionid || t.ToSubdivisionId == subdivisionid)).Take(1))
                 .ToList();
 
             var employeesBySubdivision = new List<TreeNode>();
@@ -39,17 +39,7 @@ namespace HRD.Controllers
                 }
 
                 if (employee.Transfers.Count != 0)
-                {
-                    foreach (var transfer in employee.Transfers)
-                    {
-                        if (transfer.FromSubdivisionId == subdivisionid
-                            || transfer.ToSubdivisionId == subdivisionid)
-                        {
-                            employeesBySubdivision.Add(new TreeNode(employee.FIO));
-                            break;
-                        }
-                    }
-                }
+                    employeesBySubdivision.Add(new TreeNode(employee.FIO));
             }
 
             return employeesBySubdivision.ToArray();
